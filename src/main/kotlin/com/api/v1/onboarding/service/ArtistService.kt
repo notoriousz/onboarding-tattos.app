@@ -1,5 +1,6 @@
 package com.api.v1.onboarding.service
 
+import com.api.v1.onboarding.controller.request.PutArtistRequest
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
 import org.springframework.stereotype.Service
@@ -10,22 +11,22 @@ class ArtistService(
     private val artistRepository: ArtistRepository
 ) {
 
-    fun findAllArtists(): MutableList<ArtistModel> {
-        return artistRepository.findAll()
-    }
+    fun findAllArtists(): MutableList<ArtistModel> =
+        artistRepository.findAll()
 
-    fun createNewArtist(artistCredentials: ArtistModel) {
+
+    fun createNewArtist(artist: ArtistModel) {
         try {
-            artistRepository.save(artistCredentials)
+            artistRepository.save(artist)
         } catch (Ex: Exception) {
             throw Exception(Ex)
         }
     }
 
-    fun findOneArtist(id: Int): ArtistModel {
-        return artistRepository.findById(id)
+    fun findOneArtist(id: Int): ArtistModel =
+        artistRepository.findById(id)
             .orElseThrow { Exception("Usuario não encontrado") }
-    }
+
 
     fun updateOneArtist(id: Int, artist: ArtistModel) {
 
@@ -34,6 +35,10 @@ class ArtistService(
         }
 
         artistRepository.save(artist)
+    }
+
+    fun deleteArtistById(id: Int) {
+        artistRepository.deleteById(id)
     }
 
 }
