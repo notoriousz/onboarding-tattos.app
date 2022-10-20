@@ -1,5 +1,6 @@
 package com.api.v1.onboarding.model
 
+import com.api.v1.onboarding.enum.ArtistStatus
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -18,6 +19,10 @@ data class ArtistModel(
 
     @Column
     var address: String,
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    var status: ArtistStatus?,
 
     @Column
     var createdAt: LocalDateTime = LocalDateTime.now()

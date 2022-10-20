@@ -38,8 +38,8 @@ class ArtistController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteOneArtist(@PathVariable id: Int) {
+    fun deleteOneArtist(@PathVariable id: Int) =
         artistService.deleteArtistById(id)
-    }
+
 
 }

@@ -1,0 +1,1 @@
+ALTER TABLE artist ADD COLUMN status varchar(100);

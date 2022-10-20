@@ -1,5 +1,7 @@
 package com.api.v1.onboarding.controller.response
 
+import com.api.v1.onboarding.enum.ArtistStatus
+
 
 data class ArtistResponse(
 
@@ -10,5 +12,7 @@ data class ArtistResponse(
     var email: String,
 
     var address: String,
+
+    var status: ArtistStatus?
 
 )

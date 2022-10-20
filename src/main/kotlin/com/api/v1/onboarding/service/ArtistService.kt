@@ -1,6 +1,7 @@
 package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.controller.request.PutArtistRequest
+import com.api.v1.onboarding.enum.ArtistStatus
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
 import org.springframework.stereotype.Service
@@ -38,7 +39,9 @@ class ArtistService(
     }
 
     fun deleteArtistById(id: Int) {
-        artistRepository.deleteById(id)
+        val artist = findOneArtist(id)
+        artist.status = ArtistStatus.INACTIVE
+        artistRepository.save(artist)
     }
 
 }
