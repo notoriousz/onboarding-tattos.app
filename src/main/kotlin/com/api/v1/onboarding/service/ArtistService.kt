@@ -7,7 +7,6 @@ import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Service
 
 
@@ -16,8 +15,15 @@ class ArtistService(
     private val artistRepository: ArtistRepository
 ) {
 
-    fun findAllArtists(pageable: Pageable): Page<ArtistModel> =
-        artistRepository.findAll(pageable)
+    fun findAllArtists(pageable: Pageable, name: String?): Page<ArtistModel> {
+
+        name?.let {
+            return artistRepository.findByNameContaining(pageable, name)
+        }
+
+        return artistRepository.findAll(pageable)
+    }
+
 
 
     fun createNewArtist(artist: ArtistModel) {

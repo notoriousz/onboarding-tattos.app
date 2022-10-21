@@ -20,29 +20,42 @@ class ArtistController(
 ) {
 
     @GetMapping
-    fun findAllArtists(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<ArtistResponse> =
-        artistService.findAllArtists(pageable).map { it.toResponse() }
+    fun findAllArtists(
+        @PageableDefault(page = 0, size = 10) pageable: Pageable,
+        @RequestParam name: String?
+    ): Page<ArtistResponse> =
+        artistService.findAllArtists(pageable, name).map { it.toResponse() }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createNewArtist(@RequestBody @Valid artistCredentials: PostArtistRequest) {
+    fun createNewArtist(
+        @RequestBody @Valid artistCredentials: PostArtistRequest
+    ) {
         artistService.createNewArtist(artistCredentials.toArtistModel())
     }
 
     @GetMapping("/{id}")
-    fun findOneArtist(@PathVariable id: Int): ArtistResponse =
+    fun findOneArtist(
+        @PathVariable id: Int
+    ): ArtistResponse =
         artistService.findOneArtist(id).toResponse()
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateOneArtist(@PathVariable id: Int, @RequestBody artist: PutArtistRequest) {
+    fun updateOneArtist(
+        @PathVariable id: Int,
+        @RequestBody artist: PutArtistRequest
+    ) {
         val currentArtist = artistService.findOneArtist(id)
         artistService.updateOneArtist(id, artist.toArtistModel(currentArtist))
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteOneArtist(@PathVariable id: Int) =
+    fun deleteOneArtist(
+        @PathVariable id: Int
+    ) =
         artistService.deleteArtistById(id)
 
 
