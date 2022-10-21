@@ -38,7 +38,7 @@ class ArtistService(
     fun updateOneArtist(id: Int, artist: ArtistModel) {
 
         if (!artistRepository.existsById(id)) {
-            throw Exception("Usuario não encontrado")
+            throw Exception("Not Found the user ${id}")
         }
 
         artistRepository.save(artist)

@@ -30,7 +30,7 @@ class ControllerAdvice {
             ex.message,
             HttpStatus.BAD_REQUEST.value(),
             ex.errorCode,
-            null
+            HttpStatus.BAD_REQUEST.name
         )
 
         return ResponseEntity(error, HttpStatus.BAD_REQUEST)
