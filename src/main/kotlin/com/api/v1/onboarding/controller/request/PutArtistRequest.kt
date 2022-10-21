@@ -1,6 +1,5 @@
 package com.api.v1.onboarding.controller.request
 
-import javax.validation.Valid
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 

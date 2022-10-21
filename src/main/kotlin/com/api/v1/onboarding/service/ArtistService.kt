@@ -1,6 +1,8 @@
 package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.enum.ArtistStatus
+import com.api.v1.onboarding.enum.DefaultExceptionResponse
+import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
 import org.springframework.stereotype.Service
@@ -19,13 +21,18 @@ class ArtistService(
         try {
             artistRepository.save(artist)
         } catch (Ex: Exception) {
-            throw Exception(Ex)
+            throw Exception()
         }
     }
 
     fun findOneArtist(id: Int): ArtistModel =
         artistRepository.findById(id)
-            .orElseThrow { Exception("Usuario não encontrado") }
+            .orElseThrow {
+                NotFoundException(
+                    DefaultExceptionResponse.ML201.message.format(id),
+                    DefaultExceptionResponse.ML201.code
+                )
+            }
 
 
     fun updateOneArtist(id: Int, artist: ArtistModel) {
