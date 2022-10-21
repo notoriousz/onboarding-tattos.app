@@ -1,0 +1,14 @@
+package com.api.v1.onboarding.validation
+
+import javax.validation.Constraint
+import javax.validation.Payload
+import kotlin.reflect.KClass
+
+@Constraint(validatedBy = [EmailAvailableValidator::class])
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
+annotation class EmailAvailable(
+    val message: String = "registred email",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = []
+)

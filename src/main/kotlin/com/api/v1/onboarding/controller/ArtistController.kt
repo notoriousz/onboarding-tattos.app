@@ -8,6 +8,7 @@ import com.api.v1.onboarding.controller.response.ArtistResponse
 import com.api.v1.onboarding.service.ArtistService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/v1/artists")
@@ -21,7 +22,7 @@ class ArtistController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createNewArtist(@RequestBody artistCredentials: PostArtistRequest) {
+    fun createNewArtist(@RequestBody @Valid artistCredentials: PostArtistRequest) {
         artistService.createNewArtist(artistCredentials.toArtistModel())
     }
 

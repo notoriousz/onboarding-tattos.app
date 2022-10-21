@@ -1,6 +1,5 @@
 package com.api.v1.onboarding.service
 
-import com.api.v1.onboarding.controller.request.PutArtistRequest
 import com.api.v1.onboarding.enum.ArtistStatus
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
@@ -42,6 +41,10 @@ class ArtistService(
         val artist = findOneArtist(id)
         artist.status = ArtistStatus.INACTIVE
         artistRepository.save(artist)
+    }
+
+    fun emailAvailable(email: String): Boolean {
+        return !artistRepository.existsByEmail(email)
     }
 
 }
