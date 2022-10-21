@@ -5,6 +5,9 @@ import com.api.v1.onboarding.enum.DefaultExceptionResponse
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.stereotype.Service
 
 
@@ -13,8 +16,8 @@ class ArtistService(
     private val artistRepository: ArtistRepository
 ) {
 
-    fun findAllArtists(): MutableList<ArtistModel> =
-        artistRepository.findAll()
+    fun findAllArtists(pageable: Pageable): Page<ArtistModel> =
+        artistRepository.findAll(pageable)
 
 
     fun createNewArtist(artist: ArtistModel) {
