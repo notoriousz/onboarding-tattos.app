@@ -6,9 +6,6 @@ import com.api.v1.onboarding.controller.request.PostArtistRequest
 import com.api.v1.onboarding.controller.request.PutArtistRequest
 import com.api.v1.onboarding.controller.response.ArtistResponse
 import com.api.v1.onboarding.service.ArtistService
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -21,10 +18,9 @@ class ArtistController(
 
     @GetMapping
     fun findAllArtists(
-        @PageableDefault(page = 0, size = 10) pageable: Pageable,
         @RequestParam name: String?
-    ): Page<ArtistResponse> =
-        artistService.findAllArtists(pageable, name).map { it.toResponse() }
+    ): List<ArtistResponse> =
+        artistService.findAllArtists(name).map { it.toResponse() }
 
 
     @PostMapping

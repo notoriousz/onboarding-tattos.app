@@ -5,8 +5,6 @@ import com.api.v1.onboarding.enum.DefaultExceptionResponse
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 
@@ -15,13 +13,13 @@ class ArtistService(
     private val artistRepository: ArtistRepository
 ) {
 
-    fun findAllArtists(pageable: Pageable, name: String?): Page<ArtistModel> {
+    fun findAllArtists(name: String?): List<ArtistModel> {
 
         name?.let {
-            return artistRepository.findByNameContaining(pageable, name)
+            return artistRepository.findByNameContaining(name)
         }
 
-        return artistRepository.findAll(pageable)
+        return artistRepository.findAll()
     }
 
 
