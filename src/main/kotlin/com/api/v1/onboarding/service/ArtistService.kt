@@ -24,13 +24,8 @@ class ArtistService(
 
 
 
-    fun createNewArtist(artist: ArtistModel) {
-        try {
-            artistRepository.save(artist)
-        } catch (Ex: Exception) {
-            throw Exception()
-        }
-    }
+    fun createNewArtist(artist: ArtistModel) =
+        artistRepository.save(artist)
 
     fun findOneArtist(id: Int): ArtistModel =
         artistRepository.findById(id)
