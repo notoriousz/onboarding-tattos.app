@@ -2,6 +2,7 @@ package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.enum.ArtistStatus
 import com.api.v1.onboarding.exception.NotFoundException
+import com.api.v1.onboarding.helper.buildArtist
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
 import io.mockk.every
@@ -21,7 +22,6 @@ import java.util.*
 class ArtistServiceTest {
 
     @MockK
-
     private lateinit var artistRepository: ArtistRepository
 
 
@@ -180,21 +180,6 @@ class ArtistServiceTest {
 
         verify(exactly = 1) { artistRepository.existsByEmail(email) }
     }
-
-
-    fun buildArtist(
-        id: Int? = null,
-        name: String = "Artist Name",
-        email: String = "${UUID.randomUUID()}@gmail.com",
-        address: String = "Rua test 123"
-    ) =
-        ArtistModel(
-            id = id,
-            name = name,
-            email = email,
-            address = address,
-            status = ArtistStatus.ACTIVE
-        )
 
 
 }
