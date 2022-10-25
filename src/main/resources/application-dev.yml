@@ -1,14 +1,6 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
   datasource:
     url: jdbc:mysql://localhost:3306/onboarding?createDatabaseIfNotExist=true
     username: root
     password: cnnlopk123
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jackson:
-    default-property-inclusion: non_null
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher

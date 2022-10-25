@@ -1,0 +1,17 @@
+spring:
+  spring:
+    profiles:
+      active: test
+  datasource:
+    url: jdbc:mysql://localhost:3306/onboardingtest?createDatabaseIfNotExist=true
+    username: root
+    password: cnnlopk123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  jackson:
+    default-property-inclusion: non_null
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
