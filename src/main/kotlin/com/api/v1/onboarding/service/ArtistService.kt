@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ArtistService(
-    private val artistRepository: ArtistRepository
+    private val artistRepository: ArtistRepository,
+    private val portfolioService: PortfolioService
 ) {
 
     fun findAllArtists(name: String?): List<ArtistModel> {
@@ -48,12 +49,14 @@ class ArtistService(
 
     fun deleteArtistById(id: Int) {
         val artist = findOneArtist(id)
+        portfolioService.deleteByArtist(artist)
+
         artist.status = ArtistStatus.INACTIVE
         artistRepository.save(artist)
+
     }
 
-    fun emailAvailable(email: String): Boolean {
-        return !artistRepository.existsByEmail(email)
-    }
+    fun emailAvailable(email: String): Boolean = !artistRepository.existsByEmail(email)
+
 
 }

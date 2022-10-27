@@ -5,6 +5,7 @@ import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.helper.buildArtist
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
+import com.api.v1.onboarding.repository.PortfolioRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -24,6 +25,8 @@ class ArtistServiceTest {
     @MockK
     private lateinit var artistRepository: ArtistRepository
 
+    @MockK
+    private lateinit var portfolioRepository: PortfolioRepository
 
     @InjectMockKs
     @SpyK
@@ -139,7 +142,7 @@ class ArtistServiceTest {
     }
 
     @Test
-    fun `should delete a artist`() {
+    fun `should delete a artist and all portfolios`() {
         val id = Random().nextInt()
         val fakeArtist = buildArtist(id = id)
         val expectedDeletedArtist = fakeArtist.copy(status = ArtistStatus.INACTIVE)

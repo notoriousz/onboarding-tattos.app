@@ -17,3 +17,18 @@ fun buildArtist(
         address = address,
         status = ArtistStatus.ACTIVE
     )
+
+
+fun buildPortfolio(
+    id: Int? = null,
+    name: String = "Artist Name",
+    email: String = "${UUID.randomUUID()}@gmail.com",
+    address: String = "Rua test 123"
+) =
+    ArtistModel(
+        id = id,
+        name = name,
+        email = email,
+        address = address,
+        status = ArtistStatus.ACTIVE
+    )

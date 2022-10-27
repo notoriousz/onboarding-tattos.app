@@ -2,6 +2,7 @@ package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.controller.request.PutPortfolioRequest
 import com.api.v1.onboarding.enum.PortfolioStatus
+import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.model.PortfolioModel
 import com.api.v1.onboarding.repository.PortfolioRepository
 import org.springframework.stereotype.Service
@@ -37,6 +38,17 @@ class PortfolioService(
         val portfolio = findOnePortfolio(id)
         portfolio.status = PortfolioStatus.P_DELETED
         portfolioRepository.save(portfolio)
+    }
+
+    fun deleteByArtist(artist: ArtistModel) {
+        val portfolios = portfolioRepository.findByArtist(artist)
+
+        for (portfolio in portfolios) {
+            portfolio.status = PortfolioStatus.P_DELETED
+        }
+
+        portfolioRepository.saveAll(portfolios)
+
     }
 
 }
