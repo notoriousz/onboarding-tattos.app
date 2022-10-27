@@ -1,4 +1,4 @@
-CREATE TABLE images(
+CREATE TABLE image(
     id int auto_increment primary key,
     file_name varchar(255) not null,
     file_path varchar(255) not null,

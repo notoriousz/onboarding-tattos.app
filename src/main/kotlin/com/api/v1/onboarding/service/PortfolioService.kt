@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class PortfolioService(
-    private val portfolioRepository: PortfolioRepository
+    private val portfolioRepository: PortfolioRepository,
+    private val imageService: ImageService
 ) {
 
     fun createNewPortfolio(portfolio: PortfolioModel) {
@@ -30,19 +31,31 @@ class PortfolioService(
 
     fun updatePortfolioType(request: PutPortfolioRequest, id: Int) {
         val portfolio = findOnePortfolio(id)
+
         portfolio.type = request.type
+
         portfolioRepository.save(portfolio)
     }
 
     fun deleteOnePortfolio(id: Int) {
         val portfolio = findOnePortfolio(id)
+
+        imageService.deleteByPortfolio(portfolio)
+
         portfolio.status = PortfolioStatus.P_DELETED
+
         portfolioRepository.save(portfolio)
     }
 
     fun deleteByArtist(artist: ArtistModel) {
         val portfolios = portfolioRepository.findByArtist(artist)
 
+        // delete all images
+        for (portfolio in portfolios) {
+            imageService.deleteByPortfolio(portfolio)
+        }
+
+        // delete all portfolios
         for (portfolio in portfolios) {
             portfolio.status = PortfolioStatus.P_DELETED
         }

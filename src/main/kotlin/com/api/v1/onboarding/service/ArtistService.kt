@@ -49,9 +49,11 @@ class ArtistService(
 
     fun deleteArtistById(id: Int) {
         val artist = findOneArtist(id)
+
         portfolioService.deleteByArtist(artist)
 
         artist.status = ArtistStatus.INACTIVE
+
         artistRepository.save(artist)
 
     }

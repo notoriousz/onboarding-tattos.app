@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository
 interface ArtistRepository : JpaRepository<ArtistModel, Int> {
 
 
-
     fun findByNameContaining(name: String?): List<ArtistModel>
 
     fun existsByEmail(string: String): Boolean

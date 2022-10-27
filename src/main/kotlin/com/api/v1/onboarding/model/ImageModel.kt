@@ -4,7 +4,7 @@ import com.api.v1.onboarding.enum.ImageStatus
 import java.time.LocalDateTime
 import javax.persistence.*
 
-@Entity(name = "images")
+@Entity(name = "image")
 data class ImageModel(
 
     @Id
@@ -15,7 +15,7 @@ data class ImageModel(
     var fileName: String,
 
     @Column
-    var filePath: String,
+    var filePath: String = "",
 
     @Column
     @Enumerated(EnumType.STRING)

@@ -1,13 +1,17 @@
 package com.api.v1.onboarding.controller.extension
 
 import com.api.v1.onboarding.controller.request.PostArtistRequest
+import com.api.v1.onboarding.controller.request.PostImageRequest
 import com.api.v1.onboarding.controller.request.PostPortfolioRequest
 import com.api.v1.onboarding.controller.request.PutArtistRequest
 import com.api.v1.onboarding.controller.response.ArtistResponse
+import com.api.v1.onboarding.controller.response.ImageResponse
 import com.api.v1.onboarding.controller.response.PortfolioResponse
 import com.api.v1.onboarding.enum.ArtistStatus
+import com.api.v1.onboarding.enum.ImageStatus
 import com.api.v1.onboarding.enum.PortfolioStatus
 import com.api.v1.onboarding.model.ArtistModel
+import com.api.v1.onboarding.model.ImageModel
 import com.api.v1.onboarding.model.PortfolioModel
 
 
@@ -66,3 +70,26 @@ fun PortfolioModel.toResponse(): PortfolioResponse {
     )
 }
 
+
+
+// images extensions
+
+
+fun PostImageRequest.toImageModel(portfolio: PortfolioModel): ImageModel {
+    return ImageModel(
+        fileName = this.fileName,
+        status = ImageStatus.IMG_AVAILABLE,
+        portfolio = portfolio
+    )
+}
+
+
+fun ImageModel.toResponse(): ImageResponse {
+    return ImageResponse(
+        id = this.id,
+        fileName = this.fileName,
+        filePath = this.filePath,
+        status = this.status,
+        portfolio = this.portfolio
+    )
+}
