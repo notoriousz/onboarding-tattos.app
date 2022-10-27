@@ -1,7 +1,9 @@
 package com.api.v1.onboarding.helper
 
 import com.api.v1.onboarding.enum.ArtistStatus
+import com.api.v1.onboarding.enum.PortfolioStatus
 import com.api.v1.onboarding.model.ArtistModel
+import com.api.v1.onboarding.model.PortfolioModel
 import java.util.*
 
 fun buildArtist(
@@ -20,15 +22,13 @@ fun buildArtist(
 
 
 fun buildPortfolio(
-    id: Int? = null,
-    name: String = "Artist Name",
-    email: String = "${UUID.randomUUID()}@gmail.com",
-    address: String = "Rua test 123"
+    id: Int? = Random().nextInt(),
+    type: String = "GENERIC",
+    artist: ArtistModel? = null
 ) =
-    ArtistModel(
+    PortfolioModel(
         id = id,
-        name = name,
-        email = email,
-        address = address,
-        status = ArtistStatus.ACTIVE
+        type = type,
+        artist = artist,
+        status = PortfolioStatus.P_AVAILABLE
     )

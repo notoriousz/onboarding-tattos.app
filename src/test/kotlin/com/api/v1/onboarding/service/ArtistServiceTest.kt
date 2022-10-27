@@ -1,20 +1,18 @@
 package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.enum.ArtistStatus
+import com.api.v1.onboarding.enum.PortfolioStatus
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.helper.buildArtist
-import com.api.v1.onboarding.model.ArtistModel
+import com.api.v1.onboarding.helper.buildPortfolio
 import com.api.v1.onboarding.repository.ArtistRepository
-import com.api.v1.onboarding.repository.PortfolioRepository
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.SpyK
 import io.mockk.junit5.MockKExtension
-import io.mockk.verify
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import java.util.*
@@ -26,7 +24,7 @@ class ArtistServiceTest {
     private lateinit var artistRepository: ArtistRepository
 
     @MockK
-    private lateinit var portfolioRepository: PortfolioRepository
+    private lateinit var portfolioService: PortfolioService
 
     @InjectMockKs
     @SpyK
@@ -148,10 +146,14 @@ class ArtistServiceTest {
         val expectedDeletedArtist = fakeArtist.copy(status = ArtistStatus.INACTIVE)
 
         every { artistService.findOneArtist(id) } returns fakeArtist
+        every { portfolioService.deleteByArtist(fakeArtist) } just Runs
         every { artistRepository.save(expectedDeletedArtist) } returns expectedDeletedArtist
 
         artistService.deleteArtistById(id)
 
+        assertEquals(expectedDeletedArtist.status, fakeArtist.status)
+
+        verify(exactly = 1) { portfolioService.deleteByArtist(fakeArtist) }
         verify(exactly = 1) { artistRepository.save(expectedDeletedArtist) }
         verify(exactly = 1) { artistService.findOneArtist(id) }
     }
