@@ -16,7 +16,11 @@ class PortfolioService(
     }
 
     fun findAllPortfolios(): List<PortfolioModel> =
-        portfolioRepository.findAll().toList()
+        portfolioRepository.findAll()
+            .toList()
+
+    fun findALlPortfoliosAvailables(): List<PortfolioModel> =
+        portfolioRepository.findAllByStatus(PortfolioStatus.P_AVAILABLE)
 
 
     fun findOnePortfolio(id: Int): PortfolioModel =

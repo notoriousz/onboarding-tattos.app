@@ -22,6 +22,10 @@ class PortfolioController(
     fun findAllPortfolios() : List<PortfolioResponse> =
         portfolioService.findAllPortfolios().map { it.toResponse() }
 
+    @GetMapping("/availables")
+    fun findALlPortfoliosAvailables() : List<PortfolioResponse> =
+        portfolioService.findALlPortfoliosAvailables().map { it.toResponse() }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createNewPortfolio(
@@ -48,7 +52,6 @@ class PortfolioController(
     fun deleteOnePortfolio(@PathVariable id:Int) {
         portfolioService.deleteOnePortfolio(id)
     }
-
 
 
 }
