@@ -17,7 +17,7 @@ fun buildArtist(
         name = name,
         email = email,
         address = address,
-        status = ArtistStatus.ACTIVE
+        status = ArtistStatus.USER_ACTIVE
     )
 
 

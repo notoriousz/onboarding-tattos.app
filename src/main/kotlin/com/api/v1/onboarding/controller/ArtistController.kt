@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
+private val logger = KotlinLogging.logger {}
+
 @RestController
 @RequestMapping("api/v1/artists")
 class ArtistController(
@@ -21,23 +23,36 @@ class ArtistController(
     @GetMapping
     fun getAll(
         @RequestParam name: String?
-    ): List<ArtistResponse> =  artistService.getAll(name)
+    ): List<ArtistResponse> {
+
+        logger.info { "Polling all artists" }
+
+        return artistService.getAll(name)
             .map { it.toResponse() }
+
+    }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
         @RequestBody @Valid artistCredentials: PostArtistRequest
-    ) =
+    ) {
+        logger.info { "Creating new Artist [${artistCredentials.name}]"}
+
         artistService.create(artistCredentials.toArtistModel())
+    }
 
 
     @GetMapping("/{id}")
     fun getById(
         @PathVariable id: Int
-    ): ArtistResponse =
-        artistService.getById(id).toResponse()
+    ): ArtistResponse  {
+
+        logger.info { "Pulling a artist" }
+
+        return artistService.getById(id).toResponse()
+    }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -45,7 +60,11 @@ class ArtistController(
         @PathVariable id: Int,
         @RequestBody artist: PutArtistRequest
     ) {
+
+        logger.info { "Updating Artist [${artist.toString()}]"}
+
         val currentArtist = artistService.getById(id)
+
         artistService.updateArtist(id, artist.toArtistModel(currentArtist))
     }
 
@@ -53,8 +72,11 @@ class ArtistController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteArtist(
         @PathVariable id: Int
-    ) =
+    ) {
         artistService.deleteArtistById(id)
+
+        logger.info { "The Artist related and all portfolios was deleted"}
+    }
 
 
 }

@@ -6,7 +6,7 @@ interface Artist {
 
     fun getAll(name: String?): List<ArtistModel>
 
-    fun create(artist: ArtistModel)
+    fun create(artist: ArtistModel) : ArtistModel
 
     fun getById(id: Int): ArtistModel
 

@@ -6,10 +6,8 @@ import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
 import com.api.v1.onboarding.service.Artist
-import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
-private val logger = KotlinLogging.logger {}
 
 @Service
 class ArtistService (
@@ -19,23 +17,12 @@ class ArtistService (
 
     override fun getAll(name: String?): List<ArtistModel> {
 
-        name?.let {
-
-            logger.info { "Polling all Artists filtering by [$name]" }
-
-            return artistRepository.findByNameContaining(name)
-        }
-
-        logger.info { "Polling all Artists" }
+        name?.let { artistRepository.findByNameContaining(name) }
 
         return artistRepository.findAll()
     }
 
-
-    override fun create(artist: ArtistModel) {
-        logger.info { "Creating new Artist [${artist.name}]"}
-        artistRepository.save(artist)
-    }
+    override fun create(artist: ArtistModel) = artistRepository.save(artist)
 
 
     override fun getById(id: Int): ArtistModel =
@@ -50,11 +37,7 @@ class ArtistService (
 
     override fun updateArtist(id: Int, artist: ArtistModel) {
 
-        if (!artistRepository.existsById(id)) {
-            throw Exception("Not Found the user [${id}]")
-        }
-
-        logger.info { "Updating Artist [${artist.toString()}]"}
+        if (!artistRepository.existsById(id)) throw Exception("Not Found the user [${id}]")
 
         artistRepository.save(artist)
     }
@@ -64,11 +47,9 @@ class ArtistService (
 
         portfolioService.deleteByArtist(artist)
 
-        artist.status = ArtistStatus.INACTIVE
+        artist.status = ArtistStatus.USER_INACTIVE
 
         artistRepository.save(artist)
-
-        logger.info { "The Artist ${artist.name} and all portfolios related was deleted"}
 
     }
 

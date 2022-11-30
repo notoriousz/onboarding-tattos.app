@@ -143,7 +143,7 @@ class ArtistServiceTest {
     fun `should delete a artist and all portfolios`() {
         val id = Random().nextInt()
         val fakeArtist = buildArtist(id = id)
-        val expectedDeletedArtist = fakeArtist.copy(status = ArtistStatus.INACTIVE)
+        val expectedDeletedArtist = fakeArtist.copy(status = ArtistStatus.USER_INACTIVE)
 
         every { artistService.getById(id) } returns fakeArtist
         every { portfolioService.deleteByArtist(fakeArtist) } just Runs

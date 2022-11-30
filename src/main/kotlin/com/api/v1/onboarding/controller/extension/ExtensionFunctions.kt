@@ -22,7 +22,7 @@ fun PostArtistRequest.toArtistModel(): ArtistModel {
         name = this.name,
         email = this.email,
         address = this.address,
-        status = ArtistStatus.ACTIVE
+        status = ArtistStatus.USER_ACTIVE
     )
 }
 
