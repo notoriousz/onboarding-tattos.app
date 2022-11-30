@@ -1,4 +1,4 @@
-# onboarding-tattos.app
+# Onboarding Tattos App
 
 
-### [WIP] API
+### WORK IN PROGRESS
