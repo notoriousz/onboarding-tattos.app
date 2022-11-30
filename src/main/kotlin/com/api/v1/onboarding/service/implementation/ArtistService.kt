@@ -1,34 +1,44 @@
-package com.api.v1.onboarding.service
+package com.api.v1.onboarding.service.implementation
 
 import com.api.v1.onboarding.enum.ArtistStatus
 import com.api.v1.onboarding.enum.DefaultExceptionResponse
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
+import com.api.v1.onboarding.service.Artist
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
+private val logger = KotlinLogging.logger {}
 
 @Service
-class ArtistService(
+class ArtistService (
     private val artistRepository: ArtistRepository,
     private val portfolioService: PortfolioService
-) {
+) : Artist {
 
-    fun findAllArtists(name: String?): List<ArtistModel> {
+    override fun getAll(name: String?): List<ArtistModel> {
 
         name?.let {
+
+            logger.info { "Polling all Artists filtering by [$name]" }
+
             return artistRepository.findByNameContaining(name)
         }
+
+        logger.info { "Polling all Artists" }
 
         return artistRepository.findAll()
     }
 
 
-
-    fun createNewArtist(artist: ArtistModel) =
+    override fun create(artist: ArtistModel) {
+        logger.info { "Creating new Artist [${artist.name}]"}
         artistRepository.save(artist)
+    }
 
-    fun findOneArtist(id: Int): ArtistModel =
+
+    override fun getById(id: Int): ArtistModel =
         artistRepository.findById(id)
             .orElseThrow {
                 NotFoundException(
@@ -38,17 +48,19 @@ class ArtistService(
             }
 
 
-    fun updateOneArtist(id: Int, artist: ArtistModel) {
+    override fun updateArtist(id: Int, artist: ArtistModel) {
 
         if (!artistRepository.existsById(id)) {
             throw Exception("Not Found the user [${id}]")
         }
 
+        logger.info { "Updating Artist [${artist.toString()}]"}
+
         artistRepository.save(artist)
     }
 
-    fun deleteArtistById(id: Int) {
-        val artist = findOneArtist(id)
+    override fun deleteArtistById(id: Int) {
+        val artist = getById(id)
 
         portfolioService.deleteByArtist(artist)
 
@@ -56,9 +68,11 @@ class ArtistService(
 
         artistRepository.save(artist)
 
+        logger.info { "The Artist ${artist.name} and all portfolios related was deleted"}
+
     }
 
-    fun emailAvailable(email: String): Boolean = !artistRepository.existsByEmail(email)
 
+    fun emailAvailable(email: String): Boolean = !artistRepository.existsByEmail(email)
 
 }

@@ -1,11 +1,11 @@
 package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.enum.ArtistStatus
-import com.api.v1.onboarding.enum.PortfolioStatus
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.helper.buildArtist
-import com.api.v1.onboarding.helper.buildPortfolio
 import com.api.v1.onboarding.repository.ArtistRepository
+import com.api.v1.onboarding.service.implementation.ArtistService
+import com.api.v1.onboarding.service.implementation.PortfolioService
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -43,7 +43,7 @@ class ArtistServiceTest {
 
         every { artistRepository.findAll() } returns fakeArtists
 
-        val artists = artistService.findAllArtists(name = null)
+        val artists = artistService.getAll(name = null)
 
         assertEquals(fakeArtists, artists)
 
@@ -61,7 +61,7 @@ class ArtistServiceTest {
 
         every { artistRepository.findByNameContaining(name) } returns fakeArtists
 
-        val artists = artistService.findAllArtists(name)
+        val artists = artistService.getAll(name)
 
         assertEquals(fakeArtists, artists)
 
@@ -76,7 +76,7 @@ class ArtistServiceTest {
 
         every { artistRepository.save(fakeArtist) } returns fakeArtist
 
-        artistService.createNewArtist(fakeArtist)
+        artistService.create(fakeArtist)
 
         verify(exactly = 1) { artistRepository.save(fakeArtist)  }
     }
@@ -89,7 +89,7 @@ class ArtistServiceTest {
 
         every { artistRepository.findById(id) } returns Optional.of(fakeArtist)
 
-        val customer = artistService.findOneArtist(id)
+        val customer = artistService.getById(id)
 
         assertEquals(fakeArtist, customer)
         verify(exactly = 1) { artistRepository.findById(id) }
@@ -101,7 +101,7 @@ class ArtistServiceTest {
 
         every { artistRepository.findById(id) } returns Optional.empty()
 
-        val error = assertThrows<NotFoundException>{ artistService.findOneArtist(id) }
+        val error = assertThrows<NotFoundException>{ artistService.getById(id) }
 
         assertEquals("Artist ID = [${id}] not exists", error.message)
         assertEquals("OT-201", error.errorCode)
@@ -117,7 +117,7 @@ class ArtistServiceTest {
         every { artistRepository.existsById(id) } returns true
         every { artistRepository.save(fakeArtist) } returns fakeArtist
 
-        artistService.updateOneArtist(id ,fakeArtist)
+        artistService.updateArtist(id ,fakeArtist)
 
         verify(exactly = 1) { artistRepository.save(fakeArtist) }
         verify(exactly = 1) { artistRepository.existsById(id) }
@@ -131,7 +131,7 @@ class ArtistServiceTest {
         every { artistRepository.existsById(id) } returns false
         every { artistRepository.save(fakeArtist) } returns fakeArtist
 
-        val error = assertThrows<Exception>{ artistService.updateOneArtist(id, fakeArtist) }
+        val error = assertThrows<Exception>{ artistService.updateArtist(id, fakeArtist) }
 
         assertEquals("Not Found the user [${id}]", error.message)
 
@@ -145,7 +145,7 @@ class ArtistServiceTest {
         val fakeArtist = buildArtist(id = id)
         val expectedDeletedArtist = fakeArtist.copy(status = ArtistStatus.INACTIVE)
 
-        every { artistService.findOneArtist(id) } returns fakeArtist
+        every { artistService.getById(id) } returns fakeArtist
         every { portfolioService.deleteByArtist(fakeArtist) } just Runs
         every { artistRepository.save(expectedDeletedArtist) } returns expectedDeletedArtist
 
@@ -155,7 +155,7 @@ class ArtistServiceTest {
 
         verify(exactly = 1) { portfolioService.deleteByArtist(fakeArtist) }
         verify(exactly = 1) { artistRepository.save(expectedDeletedArtist) }
-        verify(exactly = 1) { artistService.findOneArtist(id) }
+        verify(exactly = 1) { artistService.getById(id) }
     }
 
 

@@ -1,8 +1,6 @@
-package com.api.v1.onboarding.service
+package com.api.v1.onboarding.service.implementation
 
 import com.api.v1.onboarding.enum.ImageStatus
-import com.api.v1.onboarding.enum.PortfolioStatus
-import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.model.ImageModel
 import com.api.v1.onboarding.model.PortfolioModel
 import com.api.v1.onboarding.repository.ImageRepository

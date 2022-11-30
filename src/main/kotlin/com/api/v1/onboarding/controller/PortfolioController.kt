@@ -5,8 +5,8 @@ import com.api.v1.onboarding.controller.extension.toResponse
 import com.api.v1.onboarding.controller.request.PostPortfolioRequest
 import com.api.v1.onboarding.controller.request.PutPortfolioRequest
 import com.api.v1.onboarding.controller.response.PortfolioResponse
-import com.api.v1.onboarding.service.ArtistService
-import com.api.v1.onboarding.service.PortfolioService
+import com.api.v1.onboarding.service.implementation.ArtistService
+import com.api.v1.onboarding.service.implementation.PortfolioService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -31,7 +31,7 @@ class PortfolioController(
     fun createNewPortfolio(
         @RequestBody request: PostPortfolioRequest
     ) {
-        val artist = artistService.findOneArtist(request.artistId)
+        val artist = artistService.getById(request.artistId)
         portfolioService.createNewPortfolio(request.toPortfolioModel(artist))
     }
 

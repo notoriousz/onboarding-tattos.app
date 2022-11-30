@@ -1,6 +1,6 @@
 package com.api.v1.onboarding.validation
 
-import com.api.v1.onboarding.service.ArtistService
+import com.api.v1.onboarding.service.implementation.ArtistService
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
 

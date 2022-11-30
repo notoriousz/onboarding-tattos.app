@@ -5,7 +5,9 @@ import com.api.v1.onboarding.controller.extension.toResponse
 import com.api.v1.onboarding.controller.request.PostArtistRequest
 import com.api.v1.onboarding.controller.request.PutArtistRequest
 import com.api.v1.onboarding.controller.response.ArtistResponse
-import com.api.v1.onboarding.service.ArtistService
+import com.api.v1.onboarding.service.implementation.ArtistService
+import mu.KotlinLogging
+import mu.withLoggingContext
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -17,39 +19,39 @@ class ArtistController(
 ) {
 
     @GetMapping
-    fun findAllArtists(
+    fun getAll(
         @RequestParam name: String?
-    ): List<ArtistResponse> =
-        artistService.findAllArtists(name).map { it.toResponse() }
+    ): List<ArtistResponse> =  artistService.getAll(name)
+            .map { it.toResponse() }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createNewArtist(
+    fun create(
         @RequestBody @Valid artistCredentials: PostArtistRequest
-    ) {
-        artistService.createNewArtist(artistCredentials.toArtistModel())
-    }
+    ) =
+        artistService.create(artistCredentials.toArtistModel())
+
 
     @GetMapping("/{id}")
-    fun findOneArtist(
+    fun getById(
         @PathVariable id: Int
     ): ArtistResponse =
-        artistService.findOneArtist(id).toResponse()
+        artistService.getById(id).toResponse()
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateOneArtist(
+    fun updateArtist(
         @PathVariable id: Int,
         @RequestBody artist: PutArtistRequest
     ) {
-        val currentArtist = artistService.findOneArtist(id)
-        artistService.updateOneArtist(id, artist.toArtistModel(currentArtist))
+        val currentArtist = artistService.getById(id)
+        artistService.updateArtist(id, artist.toArtistModel(currentArtist))
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteOneArtist(
+    fun deleteArtist(
         @PathVariable id: Int
     ) =
         artistService.deleteArtistById(id)

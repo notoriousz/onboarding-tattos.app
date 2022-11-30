@@ -4,8 +4,8 @@ import com.api.v1.onboarding.controller.extension.toImageModel
 import com.api.v1.onboarding.controller.extension.toResponse
 import com.api.v1.onboarding.controller.request.PostImageRequest
 import com.api.v1.onboarding.controller.response.ImageResponse
-import com.api.v1.onboarding.service.ImageService
-import com.api.v1.onboarding.service.PortfolioService
+import com.api.v1.onboarding.service.implementation.ImageService
+import com.api.v1.onboarding.service.implementation.PortfolioService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
