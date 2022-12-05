@@ -4,5 +4,5 @@ data class ErrorResponse(
     val message: String?,
     val status: Int,
     val internalCode: String,
-    val error: String?
+    val error: List<FieldErrorResponse>?
 )

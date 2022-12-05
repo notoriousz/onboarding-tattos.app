@@ -17,7 +17,7 @@ class ArtistService (
 
     override fun getAll(name: String?): List<ArtistModel> {
 
-        name?.let { artistRepository.findByNameContaining(name) }
+        name?.let { return artistRepository.findByNameContaining(name) }
 
         return artistRepository.findAll()
     }
@@ -37,7 +37,10 @@ class ArtistService (
 
     override fun updateArtist(id: Int, artist: ArtistModel) {
 
-        if (!artistRepository.existsById(id)) throw Exception("Not Found the user [${id}]")
+        if (!artistRepository.existsById(id)) throw NotFoundException(
+            DefaultExceptionResponse.ML201.message.format(id),
+            DefaultExceptionResponse.ML201.code
+        )
 
         artistRepository.save(artist)
     }

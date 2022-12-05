@@ -103,8 +103,8 @@ class ArtistServiceTest {
 
         val error = assertThrows<NotFoundException>{ artistService.getById(id) }
 
-        assertEquals("Artist ID = [${id}] not exists", error.message)
-        assertEquals("OT-201", error.errorCode)
+        assertEquals("Artist ID [${id}] doesn't exist", error.message)
+        assertEquals("Onboarding-Tattos:201", error.errorCode)
 
         verify(exactly = 1) { artistRepository.findById(id) }
     }
@@ -131,9 +131,10 @@ class ArtistServiceTest {
         every { artistRepository.existsById(id) } returns false
         every { artistRepository.save(fakeArtist) } returns fakeArtist
 
-        val error = assertThrows<Exception>{ artistService.updateArtist(id, fakeArtist) }
+        val error = assertThrows<NotFoundException>{ artistService.updateArtist(id, fakeArtist) }
 
-        assertEquals("Not Found the user [${id}]", error.message)
+        assertEquals("Artist ID [${id}] doesn't exist", error.message)
+        assertEquals("Onboarding-Tattos:201", error.errorCode)
 
         verify(exactly = 1) { artistRepository.existsById(id) }
         verify(exactly = 0) { artistRepository.save(any()) }

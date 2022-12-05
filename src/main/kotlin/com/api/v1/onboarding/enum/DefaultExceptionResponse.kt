@@ -4,6 +4,6 @@ enum class DefaultExceptionResponse(
     val code: String,
     val message: String
 ) {
-    ML201("OT-201", "Artist ID = [%s] not exists"),
-    ML202("OT-202", "Artist with email [%s] already exists")
+    ML201("Onboarding-Tattos:201", "Artist ID [%s] doesn't exist"),
+    ML202("Onboarding-Tattos:202", "Artist with email [%s] already exist")
 }
