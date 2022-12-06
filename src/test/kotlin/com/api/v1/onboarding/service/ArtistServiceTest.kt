@@ -161,6 +161,28 @@ class ArtistServiceTest {
         verify(exactly = 1) { artistService.getById(id) }
     }
 
+    @Test
+    fun `should throw an exception when try delete a artist already deleted`() {
+        val id = Random().nextInt()
+        val fakeArtist = buildArtist(
+            id = id,
+            status = ArtistStatus.USER_INACTIVE
+        )
+
+        every { artistService.getById(id) } returns fakeArtist
+        every { portfolioService.deleteByArtist(fakeArtist) } just Runs
+        every { artistRepository.save(any()) } returns fakeArtist
+
+        val error = assertThrows<BadRequestException>{ artistService.deleteArtistById(id) }
+
+        assertEquals("Artist already deleted", error.message)
+        assertEquals("Onboarding-Tattos:203", error.errorCode)
+
+        verify(exactly = 0) { portfolioService.deleteByArtist(fakeArtist) }
+        verify(exactly = 0) { artistRepository.save(any()) }
+        verify(exactly = 1) { artistService.getById(id) }
+    }
+
 
     @Test
     fun `should exists by email`() {

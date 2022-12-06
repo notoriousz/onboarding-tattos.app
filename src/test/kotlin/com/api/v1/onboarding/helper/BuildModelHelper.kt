@@ -10,14 +10,15 @@ fun buildArtist(
     id: Int? = null,
     name: String = "Artist Name",
     email: String = "${UUID.randomUUID()}@gmail.com",
-    address: String = "Rua test 123"
+    address: String = "Rua test 123",
+    status: ArtistStatus = ArtistStatus.USER_ACTIVE
 ) =
     ArtistModel(
         id = id,
         name = name,
         email = email,
         address = address,
-        status = ArtistStatus.USER_ACTIVE
+        status = status
     )
 
 

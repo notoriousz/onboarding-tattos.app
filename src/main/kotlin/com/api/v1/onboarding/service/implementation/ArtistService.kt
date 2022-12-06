@@ -49,6 +49,11 @@ class ArtistService (
     override fun deleteArtistById(id: Int) {
         val artist = getById(id)
 
+        if(artist.status == ArtistStatus.USER_INACTIVE) throw BadRequestException(
+            DefaultExceptionResponse.ML203.message.format(id),
+            DefaultExceptionResponse.ML203.code
+        )
+
         portfolioService.deleteByArtist(artist)
 
         artist.status = ArtistStatus.USER_INACTIVE
