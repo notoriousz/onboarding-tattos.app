@@ -2,6 +2,7 @@ package com.api.v1.onboarding.service.implementation
 
 import com.api.v1.onboarding.enum.ArtistStatus
 import com.api.v1.onboarding.enum.DefaultExceptionResponse
+import com.api.v1.onboarding.exception.BadRequestException
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.model.ArtistModel
 import com.api.v1.onboarding.repository.ArtistRepository
@@ -37,9 +38,9 @@ class ArtistService (
 
     override fun updateArtist(id: Int, artist: ArtistModel) {
 
-        if (!artistRepository.existsById(id)) throw NotFoundException(
-            DefaultExceptionResponse.ML201.message.format(id),
-            DefaultExceptionResponse.ML201.code
+        if (emailAvailable(artist.email)) throw BadRequestException(
+            DefaultExceptionResponse.ML202.message.format(id),
+            DefaultExceptionResponse.ML202.code
         )
 
         artistRepository.save(artist)

@@ -1,6 +1,7 @@
 package com.api.v1.onboarding.service
 
 import com.api.v1.onboarding.enum.ArtistStatus
+import com.api.v1.onboarding.exception.BadRequestException
 import com.api.v1.onboarding.exception.NotFoundException
 import com.api.v1.onboarding.helper.buildArtist
 import com.api.v1.onboarding.repository.ArtistRepository
@@ -114,29 +115,30 @@ class ArtistServiceTest {
         val id = Random().nextInt()
         val fakeArtist = buildArtist(id = id)
 
-        every { artistRepository.existsById(id) } returns true
+        every { artistService.emailAvailable(fakeArtist.email) } returns false
         every { artistRepository.save(fakeArtist) } returns fakeArtist
 
         artistService.updateArtist(id ,fakeArtist)
 
         verify(exactly = 1) { artistRepository.save(fakeArtist) }
-        verify(exactly = 1) { artistRepository.existsById(id) }
+        verify(exactly = 1) { artistService.emailAvailable(fakeArtist.email) }
+
     }
 
     @Test
-    fun `should throw an exception when try update`() {
+    fun `should throw an exception when try update a non exist artist`() {
         val id = Random().nextInt()
         val fakeArtist = buildArtist(id = id)
 
-        every { artistRepository.existsById(id) } returns false
+        every { artistService.emailAvailable(fakeArtist.email) } returns true
         every { artistRepository.save(fakeArtist) } returns fakeArtist
 
-        val error = assertThrows<NotFoundException>{ artistService.updateArtist(id, fakeArtist) }
+        val error = assertThrows<BadRequestException>{ artistService.updateArtist(id, fakeArtist) }
 
-        assertEquals("Artist ID [${id}] doesn't exist", error.message)
-        assertEquals("Onboarding-Tattos:201", error.errorCode)
+        assertEquals("Artist with email [${id}] already exist", error.message)
+        assertEquals("Onboarding-Tattos:202", error.errorCode)
 
-        verify(exactly = 1) { artistRepository.existsById(id) }
+        verify(exactly = 1) { artistService.emailAvailable(fakeArtist.email)  }
         verify(exactly = 0) { artistRepository.save(any()) }
     }
 
