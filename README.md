@@ -1,6 +1,6 @@
 # Onboarding Tattos App
 
-Simple APP to support Tattoo Artists to store your image inside a Portfolio.
+Application to support Tattoo Artists to store your images inside a Portfolio.
 
 
 ## Doc
